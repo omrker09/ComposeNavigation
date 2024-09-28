@@ -12,7 +12,7 @@ import com.example.bottomnav.screens.ProfileScreen
 import com.example.bottomnav.screens.SettingsScreen
 
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, navControllerScreens: NavHostController) {
     NavHost(
         navController = navController ,
         startDestination = BottomBarScreen.Home.route
@@ -25,7 +25,7 @@ fun BottomNavGraph(navController: NavHostController) {
             ProfileScreen()
         }
         composable(route = BottomBarScreen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(navControllerScreens)
         }
     }
 }

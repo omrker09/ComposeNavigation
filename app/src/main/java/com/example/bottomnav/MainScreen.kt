@@ -3,6 +3,7 @@ package com.example.bottomnav
 import android.annotation.SuppressLint
 import android.graphics.drawable.Icon
 import android.inputmethodservice.Keyboard.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
@@ -15,19 +16,21 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(navControllerScreens: NavHostController) {
     val navController = rememberNavController()
     Scaffold (
         bottomBar = {
             BottomBar(navController = navController)
         }
     ) {
-        BottomNavGraph(navController = navController)
+        BottomNavGraph(navController = navController, navControllerScreens = navControllerScreens)
     }
 }
 
@@ -41,7 +44,9 @@ fun BottomBar(navController: NavHostController) {
     val navBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStack?.destination
 
-    BottomAppBar {
+    BottomAppBar (
+
+    ) {
         screens.forEach { screen ->
             AddItem(screen = screen, currentDestination = currentDestination, navController = navController )
         }
@@ -69,6 +74,8 @@ fun RowScope.AddItem(
         } == true,
         onClick = {
             navController.navigate(screen.route)
-        }
+        },
+        selectedContentColor = Color.Black,
+        unselectedContentColor = Color.Gray
     )
 }
