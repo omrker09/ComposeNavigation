@@ -3,8 +3,12 @@ package com.example.bottomnav
 import android.annotation.SuppressLint
 import android.graphics.drawable.Icon
 import android.inputmethodservice.Keyboard.Row
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,6 +20,8 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -59,19 +65,26 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
+    val isSelected = currentDestination?.hierarchy?.any {
+        it.route == screen.route
+    } == true
     BottomNavigationItem(
-        label =  {
-            Text(text = screen.title)
-        },
+
         icon = {
-            Icon(
-                imageVector = screen.icon,
-                contentDescription = "Icon"
-            )
+               Column (
+                   modifier = Modifier.fillMaxSize(),
+                   verticalArrangement = Arrangement.Center,
+                   horizontalAlignment = Alignment.CenterHorizontally
+
+               ) {
+                   Icon(
+                       imageVector = screen.icon,
+                       contentDescription = "Icon"
+                   )
+                   Text(text = screen.title, color = if (isSelected) Color.Black else Color.Gray)
+               }
         },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.route
-        } == true,
+        selected = isSelected,
         onClick = {
             navController.navigate(screen.route)
         },
