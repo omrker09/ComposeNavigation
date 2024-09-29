@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,14 +23,21 @@ import androidx.compose.material.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.example.bottomnav.ui.theme.LightGrayTheme
+import com.example.bottomnav.ui.theme.fedokaFamily
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navControllerScreens: NavHostController) {
+fun MainScreen(
+    navControllerScreens: NavHostController
+) {
     val navController = rememberNavController()
     Scaffold (
         bottomBar = {
@@ -51,7 +59,8 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = navBackStack?.destination
 
     BottomAppBar (
-
+        modifier = Modifier.clipToBounds(),
+        containerColor = LightGrayTheme
     ) {
         screens.forEach { screen ->
             AddItem(screen = screen, currentDestination = currentDestination, navController = navController )
@@ -77,11 +86,9 @@ fun RowScope.AddItem(
                    horizontalAlignment = Alignment.CenterHorizontally
 
                ) {
-                   Icon(
-                       imageVector = screen.icon,
-                       contentDescription = "Icon"
-                   )
-                   Text(text = screen.title, color = if (isSelected) Color.Black else Color.Gray)
+
+                   Icon(painter = painterResource(id = if (isSelected) screen.resourceIcon else screen.resourceIconUnselected), contentDescription = "icon")
+                   Text(text = screen.title, color = if (isSelected) Color.Black else Color.Gray, fontFamily = fedokaFamily, fontWeight = FontWeight.SemiBold)
                }
         },
         selected = isSelected,
